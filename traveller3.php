@@ -2,7 +2,7 @@
 require __DIR__ . '/db.php';
 
 function back($status, $msg) {
-  header('Location: insert_traveller.php?' . http_build_query(['status'=>$status,'msg'=>$msg]));
+  header('Location: insert_traveller.html?' . http_build_query(['status'=>$status,'msg'=>$msg]));
   exit;
 }
 
