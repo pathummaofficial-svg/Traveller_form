@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>SIT772 9.2D – Insert Traveller (HTML)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { --b:#ddd; --ok:#eef9f0; --okb:#9ecf9e; --er:#fee; --erb:#f99; }
+    body{font-family:system-ui,Arial,sans-serif;max-width:920px;margin:28px auto;padding:0 16px}
+    h1{margin:0 0 6px}
+    p.help{color:#666;margin:0 0 14px}
+    form{border:1px solid var(--b);border-radius:12px;padding:16px;margin:12px 0}
+    label{display:block;margin:10px 0 4px}
+    input,select,button{padding:9px 10px;width:100%;max-width:460px}
+    input,select{border:1px solid var(--b);border-radius:8px}
+    button{border-radius:10px;border:1px solid var(--b);cursor:pointer}
+    .row{display:flex;gap:16px;flex-wrap:wrap}
+    .row>div{flex:1 1 300px}
+    small{color:#666}
+    .hint{font-size:.92rem;color:#444;margin:8px 0 0}
+    .msg{margin:12px 0;padding:10px;border-radius:8px}
+    .ok{background:var(--ok);border:1px solid var(--okb)}
+    .error{background:var(--er);border:1px solid var(--erb)}
+  </style>
+</head>
+<body>
+  <h1>Insert Traveller</h1>
+  <p class="help">Fields marked * are required. This page is pure HTML and posts to <code>process_traveller.php</code>.</p>
+
+  <!-- Client-side only. Server messages will appear on insert_traveller.php in the PHP version. -->
+  <div id="clientMsg" class="msg" style="display:none"></div>
+
+  <form id="travellerForm" method="post" action="process_traveller.php" novalidate>
+    <div class="row">
+      <div>
+        <label for="fullname">Full name *</label>
+        <input id="fullname" name="fullname" maxlength="100" required />
+      </div>
+      <div>
+        <label for="email">Email *</label>
+        <input id="email" name="email" type="email" maxlength="191" required placeholder="name@example.com" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone" maxlength="20" placeholder="+61 4xx xxx xxx"
+               pattern="^\+?[0-9()\-\s]{6,20}$" />
+        <div class="hint">Digits, spaces, parentheses, dashes, optional leading +.</div>
+      </div>
+      <div>
+        <label for="dob">Date of birth</label>
+        <input id="dob" name="dob" type="date" />
+        <small>YYYY-MM-DD</small>
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label for="countryofresidence">Country of residence *</label>
+        <select id="countryofresidence" name="countryofresidence" required>
+          <option value="">Select a country</option>
+          <option>Australia</option>
+          <option>Thailand</option>
+          <option>China</option>
+          <option>India</option>
+          <option>Vietnam</option>
+          <option>Indonesia</option>
+          <option>United States</option>
+          <option>United Kingdom</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <p><button type="submit">Insert</button></p>
+  </form>
+
+  <script>
+    // Lightweight client-side validation to catch obvious mistakes before POST
+    document.getElementById('travellerForm').addEventListener('submit', function (e) {
+      const msg = document.getElementById('clientMsg');
+      msg.style.display = 'none';
+      msg.className = 'msg';
+
+      const fullname = document.getElementById('fullname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const dob = document.getElementById('dob').value;
+      const country = document.getElementById('countryofresidence').value;
+
+      const errors = [];
+      if (!fullname) errors.push('Full name is required.');
+      if (!email) errors.push('Email is required.');
+      else {
+        const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!ok) errors.push('Email format is invalid.');
+      }
+      if (phone && !/^\+?[0-9()\-\s]{6,20}$/.test(phone)) errors.push('Phone format looks invalid.');
+      if (dob) {
+        const today = new Date(); today.setHours(0,0,0,0);
+        const d = new Date(dob);
+        if (isNaN(d.getTime())) errors.push('DOB must be a valid date.');
+        else if (d >= today) errors.push('DOB must be in the past.');
+      }
+      if (!country) errors.push('Country of residence is required.');
+
+      if (errors.length) {
+        e.preventDefault();
+        msg.textContent = errors.join(' ');
+        msg.classList.add('error');
+        msg.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
