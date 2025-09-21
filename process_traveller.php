@@ -29,9 +29,8 @@ if ($dob !== '') {
 if ($errors) back('error', implode(' ', $errors));
 
 // Insert
-$stmt = $mysqli->prepare(
-  "INSERT INTO Traveller (fullname, email, phone, dob, countryofresidence)
-   VALUES (?,?,?,?,?)"
+$stm = $mysqli->prepare(
+  "INSERT INTO traveller_db.traveller (fullname, email, phone, dob, countryofresidence) VALUES (?,?,?,?,?)"
 );
 if (!$stmt) back('error', 'Prepare failed: ' . $mysqli->error);
 
