@@ -30,7 +30,7 @@ if ($errors) back('error', implode(' ', $errors));
 
 // Insert
 $stmt = $mysqli->prepare(
-  "INSERT INTO traveller_db (fullname, email, phone, dob, countryofresidence)
+  "INSERT INTO traveller_form (fullname, email, phone, dob, countryofresidence)
    VALUES (?,?,?,?,?)"
 );
 if (!$stmt) back('error', 'Prepare failed: ' . $mysqli->error);
