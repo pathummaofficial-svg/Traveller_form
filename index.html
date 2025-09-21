@@ -20,8 +20,7 @@
   <h1>Insert Traveller</h1>
   <div id="banner" class="msg"></div>
 
-  <!-- Note the absolute path in action -->
-  <form method="post" action="/Traveller/save.php" novalidate>
+  <form method="post" action="save.php" novalidate>
     <div class="row">
       <div>
         <label for="fullname">Full name *</label>
@@ -61,8 +60,8 @@
   </form>
 
   <script>
-    // Show banner from save.php
-    (function(){
+    // Show success/error banner from save.php redirects
+    (function () {
       const p = new URLSearchParams(location.search);
       const status = p.get('status'), msg = p.get('msg');
       if (!status || !msg) return;
