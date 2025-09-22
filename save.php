@@ -31,7 +31,20 @@ $errors = [];
 if ($fullname === '') $errors[] = 'Full name is required.';
 if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Valid email is required.';
 if ($country === '') $errors[] = 'Country is required.';
-if ($dob !== '' && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $dob)) $errors[] = 'DOB must be YYYY-MM-DD.';
+if ($dob !== '') {
+  // Expect YYYY-MM-DD from <input type="date">
+  $dt = DateTime::createFromFormat('Y-m-d', $dob);
+  $validFormat = $dt && $dt->format('Y-m-d') === $dob;
+
+  if (!$validFormat) {
+    $errors[] = 'DOB must be YYYY-MM-DD.';
+  } else {
+    $today = new DateTime('today');
+    if ($dt > $today) {
+      $errors[] = 'Date of birth cannot be in the future.';
+    }
+  }
+}
 
 if ($errors) {
   header('Location: '.$formPage.'?' . http_build_query([
