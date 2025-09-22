@@ -24,7 +24,14 @@ $errors = [];
 if ($fullname === '') $errors[] = 'Full name is required.';
 if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Valid email is required.';
 if ($country === '') $errors[] = 'Country is required.';
-if ($dob !== '' && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $dob)) $errors[] = 'DOB must be YYYY-MM-DD.';
+if ($dob !== '') {
+  if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dob)) {
+    $errors[] = 'DOB must be YYYY-MM-DD.';
+  } elseif ($dob > date('Y-m-d')) {
+    $errors[] = 'DOB cannot be in the future.';
+  }
+}
+
 
 if ($errors) {
   echo '❌ ' . implode(' ', $errors) . '<p><a href="form.html">Back</a></p>';
