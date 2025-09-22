@@ -45,6 +45,12 @@ if ($dob !== '') {
     }
   }
 }
+if ($phone !== '') {
+  // Must match +xx xxx xxx xxx
+  if (!preg_match('/^\+\d{1,3}\s\d{3}\s\d{3}\s\d{3}$/', $phone)) {
+    $errors[] = 'Phone must be with country code e.g. +61 xxx xxx xxx.';
+  }
+}
 
 if ($errors) {
   header('Location: '.$formPage.'?' . http_build_query([
