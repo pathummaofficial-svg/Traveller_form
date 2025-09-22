@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SIT772 9.2D – Insert Traveller</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{font-family:system-ui,Arial,sans-serif;max-width:1000px;margin:28px auto;padding:0 16px}
+    form{border:1px solid #ddd;border-radius:12px;padding:16px;margin:12px 0}
+    label{display:block;margin:10px 0 4px}
+    input,select,button{padding:9px 10px;width:100%;max-width:460px}
+    .row{display:flex;gap:16px;flex-wrap:wrap}.row>div{flex:1 1 300px}
+    .msg{margin:12px 0;padding:10px;border-radius:8px;display:none}
+    .ok{background:#eef9f0;border:1px solid #9ecf9e;color:#064}
+    .error{background:#fee;border:1px solid #f99;color:#900}
+    small{color:#666}
+  </style>
+</head>
+<body>
+  <h1>Traveller Form</h1>
+  <div id="banner" class="msg"></div>
+
+  <form method="post" action="save.php" novalidate>
+    <div class="row">
+      <div>
+        <label for="fullname">Full name *</label>
+        <input id="fullname" name="fullname" maxlength="100" required>
+      </div>
+      <div>
+        <label for="email">Email *</label>
+        <input id="email" name="email" type="email" maxlength="191" required placeholder="name@example.com">
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone" maxlength="20" placeholder="+61 4xx xxx xxx">
+      </div>
+      <div>
+        <label for="dob">Date of birth</label>
+        <input id="dob" name="dob" type="date">
+        <small>YYYY-MM-DD</small>
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label for="countryofresidence">Country of residence *</label>
+        <select id="countryofresidence" name="countryofresidence" required>
+          <option value="">Select a country</option>
+          <option>Australia</option><option>Thailand</option><option>China</option>
+          <option>India</option><option>Vietnam</option><option>Indonesia</option>
+          <option>United States</option><option>United Kingdom</option><option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <p><button type="submit">Insert</button></p>
+  </form>
+
+  <script>
+    // Show success/error banner from save.php redirects
+    (function () {
+      const p = new URLSearchParams(location.search);
+      const status = p.get('status'), msg = p.get('msg');
+      if (!status || !msg) return;
+      const el = document.getElementById('banner');
+      el.textContent = msg;
+      el.classList.add(status === 'ok' ? 'ok' : 'error');
+      el.style.display = 'block';
+      if (history.replaceState) history.replaceState({}, '', location.pathname);
+    })();
+  </script>
+</body>
+</html>
