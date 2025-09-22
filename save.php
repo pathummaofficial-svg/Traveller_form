@@ -47,7 +47,7 @@ if ($dob !== '') {
 }
 if ($phone !== '') {
   // Must match +xx xxx xxx xxx
-  if (!preg_match('/^\+\d{8,15}$/', $phone)) {
+  if (!preg_match('/^\+\d+$/', $phone)) {
     $errors[] = 'Phone must be with country code e.g. +61 xxx xxx xxx.';
   }
 }
